@@ -72,6 +72,12 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    pricing: Pricing;
+    testimonials: Testimonial;
+    courses: Course;
+    products: Product;
+    services: Service;
+    orders: Order;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +100,12 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    pricing: PricingSelect<false> | PricingSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    courses: CoursesSelect<false> | CoursesSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -200,7 +212,19 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | PricingTableBlock
+    | TestimonialsBlock
+    | FeatureGridBlock
+    | StatsBlock
+    | LogoCloudBlock
+    | FAQBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -781,6 +805,584 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingTableBlock".
+ */
+export interface PricingTableBlock {
+  /**
+   * Main heading for the pricing section
+   */
+  title?: string | null;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Select pricing plans to display
+   */
+  pricingPlans: (number | Pricing)[];
+  displayStyle?: ('cards' | 'table' | 'comparison') | null;
+  /**
+   * Display toggle between monthly and annual pricing
+   */
+  showAnnualToggle?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pricingTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing".
+ */
+export interface Pricing {
+  id: number;
+  title: string;
+  /**
+   * Base price for this plan
+   */
+  price: number;
+  billingPeriod: 'monthly' | 'yearly' | 'onetime' | 'custom';
+  /**
+   * Short description of this pricing plan
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  features: {
+    feature: string;
+    included?: boolean | null;
+    /**
+     * Optional explanation for this feature
+     */
+    tooltip?: string | null;
+    id?: string | null;
+  }[];
+  highlighted?: boolean | null;
+  ctaLabel?: string | null;
+  /**
+   * URL for the call-to-action button
+   */
+  ctaLink?: string | null;
+  metadata?: {
+    /**
+     * Link to Stripe pricing ID for payment integration
+     */
+    stripePriceId?: string | null;
+    maxUsers?: number | null;
+    supportLevel?: ('email' | 'priority' | 'dedicated') | null;
+  };
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  title?: string | null;
+  /**
+   * Select testimonials to display
+   */
+  testimonials: (number | Testimonial)[];
+  layout?: ('grid' | 'carousel' | 'masonry') | null;
+  showRatings?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  clientName: string;
+  /**
+   * e.g., CEO, Marketing Director, etc.
+   */
+  clientRole: string;
+  company: string;
+  industry: 'education' | 'ecommerce' | 'agency' | 'technology' | 'healthcare' | 'finance' | 'other';
+  /**
+   * Optional company logo
+   */
+  companyLogo?: (number | null) | Media;
+  /**
+   * Optional photo of the client
+   */
+  avatar?: (number | null) | Media;
+  /**
+   * The testimonial quote
+   */
+  testimonial: string;
+  rating: number;
+  /**
+   * Show this testimonial prominently
+   */
+  featured?: boolean | null;
+  /**
+   * Optional YouTube or Vimeo URL for video testimonial
+   */
+  videoUrl?: string | null;
+  publishedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  title?: string | null;
+  features: {
+    /**
+     * Icon or image for this feature
+     */
+    icon?: (number | null) | Media;
+    title: string;
+    description: string;
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: number | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: number | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+    id?: string | null;
+  }[];
+  columns?: ('2' | '3' | '4') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock".
+ */
+export interface StatsBlock {
+  stats: {
+    /**
+     * e.g., "10,000+", "99%", "$5M"
+     */
+    value: string;
+    /**
+     * e.g., "Active Users", "Customer Satisfaction"
+     */
+    label: string;
+    /**
+     * Optional icon for this stat
+     */
+    icon?: (number | null) | Media;
+    id?: string | null;
+  }[];
+  layout?: ('horizontal' | 'grid') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stats';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoCloudBlock".
+ */
+export interface LogoCloudBlock {
+  /**
+   * e.g., "Trusted by leading companies"
+   */
+  title?: string | null;
+  logos: {
+    logo: number | Media;
+    /**
+     * Used for alt text
+     */
+    companyName: string;
+    /**
+     * Optional link to company website
+     */
+    url?: string | null;
+    id?: string | null;
+  }[];
+  /**
+   * Adds a grayscale filter and shows color on hover
+   */
+  grayscale?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logoCloud';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  title?: string | null;
+  faqs: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    id?: string | null;
+  }[];
+  displayStyle?: ('accordion' | 'grid') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses".
+ */
+export interface Course {
+  id: number;
+  title: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  instructor: number | User;
+  level: 'beginner' | 'intermediate' | 'advanced' | 'all';
+  /**
+   * e.g., "8 weeks", "40 hours", "Self-paced"
+   */
+  duration: string;
+  price: number;
+  thumbnail: number | Media;
+  curriculum?:
+    | {
+        module: string;
+        lessons?:
+          | {
+              lesson: string;
+              id?: string | null;
+            }[]
+          | null;
+        duration?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Number of students enrolled
+   */
+  enrollmentCount?: number | null;
+  rating?: number | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * What students should know before taking this course
+   */
+  prerequisites?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  learningOutcomes?:
+    | {
+        outcome: string;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  title: string;
+  /**
+   * Stock Keeping Unit
+   */
+  sku: string;
+  price: number;
+  /**
+   * Optional discounted price
+   */
+  salePrice?: number | null;
+  /**
+   * Brief product summary for listings
+   */
+  shortDescription: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  images: {
+    image: number | Media;
+    id?: string | null;
+  }[];
+  categories?: (number | Category)[] | null;
+  inStock?: boolean | null;
+  inventory?: number | null;
+  specifications?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g., Size, Color
+   */
+  variants?:
+    | {
+        name: string;
+        options?:
+          | {
+              option: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  relatedProducts?: (number | Product)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  title: string;
+  /**
+   * Icon or image representing this service
+   */
+  icon?: (number | null) | Media;
+  /**
+   * Brief summary for service cards
+   */
+  shortDescription: string;
+  fullDescription: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  pricing: {
+    type: 'fixed' | 'hourly' | 'custom';
+    /**
+     * Leave empty for custom pricing
+     */
+    amount?: number | null;
+    /**
+     * e.g., "Contact for quote"
+     */
+    customText?: string | null;
+  };
+  deliverables?:
+    | {
+        deliverable: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * e.g., "2-4 weeks", "30 days"
+   */
+  timeline?: string | null;
+  /**
+   * Link to blog posts showcasing this service
+   */
+  caseStudies?: (number | Post)[] | null;
+  /**
+   * Highlight this service on the homepage
+   */
+  featured?: boolean | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  /**
+   * Unique order identifier
+   */
+  orderNumber: string;
+  customer: {
+    /**
+     * Link to user account if registered
+     */
+    user?: (number | null) | User;
+    customerEmail: string;
+    customerName?: string | null;
+  };
+  items: {
+    itemType: 'product' | 'course' | 'service' | 'pricing';
+    product?: (number | null) | Product;
+    course?: (number | null) | Course;
+    service?: (number | null) | Service;
+    pricing?: (number | null) | Pricing;
+    quantity: number;
+    price: number;
+    subtotal: number;
+    id?: string | null;
+  }[];
+  total: number;
+  status: 'pending' | 'processing' | 'completed' | 'refunded' | 'failed';
+  payment?: {
+    /**
+     * Stripe payment intent or charge ID
+     */
+    stripePaymentId?: string | null;
+    stripeCustomerId?: string | null;
+    paymentMethod?: ('card' | 'paypal' | 'bank_transfer' | 'other') | null;
+  };
+  /**
+   * Internal notes about this order
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -990,6 +1592,30 @@ export interface PayloadLockedDocument {
         value: number | User;
       } | null)
     | ({
+        relationTo: 'pricing';
+        value: number | Pricing;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'courses';
+        value: number | Course;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
+      } | null)
+    | ({
         relationTo: 'redirects';
         value: number | Redirect;
       } | null)
@@ -1087,6 +1713,12 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        pricingTable?: T | PricingTableBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        stats?: T | StatsBlockSelect<T>;
+        logoCloud?: T | LogoCloudBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
       };
   meta?:
     | T
@@ -1183,6 +1815,110 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingTableBlock_select".
+ */
+export interface PricingTableBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  pricingPlans?: T;
+  displayStyle?: T;
+  showAnnualToggle?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  title?: T;
+  testimonials?: T;
+  layout?: T;
+  showRatings?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  features?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+        id?: T;
+      };
+  columns?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsBlock_select".
+ */
+export interface StatsBlockSelect<T extends boolean = true> {
+  stats?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        icon?: T;
+        id?: T;
+      };
+  layout?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogoCloudBlock_select".
+ */
+export interface LogoCloudBlockSelect<T extends boolean = true> {
+  title?: T;
+  logos?:
+    | T
+    | {
+        logo?: T;
+        companyName?: T;
+        url?: T;
+        id?: T;
+      };
+  grayscale?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  title?: T;
+  faqs?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  displayStyle?: T;
   id?: T;
   blockName?: T;
 }
@@ -1353,6 +2089,247 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pricing_select".
+ */
+export interface PricingSelect<T extends boolean = true> {
+  title?: T;
+  price?: T;
+  billingPeriod?: T;
+  description?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        included?: T;
+        tooltip?: T;
+        id?: T;
+      };
+  highlighted?: T;
+  ctaLabel?: T;
+  ctaLink?: T;
+  metadata?:
+    | T
+    | {
+        stripePriceId?: T;
+        maxUsers?: T;
+        supportLevel?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  clientName?: T;
+  clientRole?: T;
+  company?: T;
+  industry?: T;
+  companyLogo?: T;
+  avatar?: T;
+  testimonial?: T;
+  rating?: T;
+  featured?: T;
+  videoUrl?: T;
+  publishedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses_select".
+ */
+export interface CoursesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  instructor?: T;
+  level?: T;
+  duration?: T;
+  price?: T;
+  thumbnail?: T;
+  curriculum?:
+    | T
+    | {
+        module?: T;
+        lessons?:
+          | T
+          | {
+              lesson?: T;
+              id?: T;
+            };
+        duration?: T;
+        id?: T;
+      };
+  enrollmentCount?: T;
+  rating?: T;
+  categories?: T;
+  prerequisites?: T;
+  learningOutcomes?:
+    | T
+    | {
+        outcome?: T;
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  title?: T;
+  sku?: T;
+  price?: T;
+  salePrice?: T;
+  shortDescription?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
+  categories?: T;
+  inStock?: T;
+  inventory?: T;
+  specifications?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  variants?:
+    | T
+    | {
+        name?: T;
+        options?:
+          | T
+          | {
+              option?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  relatedProducts?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  icon?: T;
+  shortDescription?: T;
+  fullDescription?: T;
+  pricing?:
+    | T
+    | {
+        type?: T;
+        amount?: T;
+        customText?: T;
+      };
+  deliverables?:
+    | T
+    | {
+        deliverable?: T;
+        id?: T;
+      };
+  timeline?: T;
+  caseStudies?: T;
+  featured?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  generateSlug?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  orderNumber?: T;
+  customer?:
+    | T
+    | {
+        user?: T;
+        customerEmail?: T;
+        customerName?: T;
+      };
+  items?:
+    | T
+    | {
+        itemType?: T;
+        product?: T;
+        course?: T;
+        service?: T;
+        pricing?: T;
+        quantity?: T;
+        price?: T;
+        subtotal?: T;
+        id?: T;
+      };
+  total?: T;
+  status?: T;
+  payment?:
+    | T
+    | {
+        stripePaymentId?: T;
+        stripeCustomerId?: T;
+        paymentMethod?: T;
+      };
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
