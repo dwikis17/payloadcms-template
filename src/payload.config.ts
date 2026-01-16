@@ -9,6 +9,12 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Pricing } from './collections/Pricing'
+import { Testimonials } from './collections/Testimonials'
+import { Courses } from './collections/Courses'
+import { Products } from './collections/Products'
+import { Services } from './collections/Services'
+import { Orders } from './collections/Orders'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -62,7 +68,19 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Pricing,
+    Testimonials,
+    Courses,
+    Products,
+    Services,
+    Orders,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins,

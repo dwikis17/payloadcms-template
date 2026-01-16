@@ -9,6 +9,8 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { testimonialsData } from './testimonials-data'
+import { pricingPlans } from './pricing-plans'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -18,6 +20,8 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  'pricing',
+  'testimonials',
 ]
 
 const globals: GlobalSlug[] = ['header', 'footer']
@@ -213,6 +217,75 @@ export const seed = async ({
       depth: 0,
       data: contactPageData({ contactForm: contactForm }),
     }),
+  ])
+
+  payload.logger.info(`— Seeding pricing plans...`)
+
+  // Seed pricing plans for each industry
+  const pricingDocs = await Promise.all([
+    // Education pricing
+    ...pricingPlans.education.map((plan) =>
+      payload.create({
+        collection: 'pricing',
+        depth: 0,
+        data: {
+          ...plan,
+          _status: 'published',
+        },
+      }),
+    ),
+    // E-commerce pricing
+    ...pricingPlans.ecommerce.map((plan) =>
+      payload.create({
+        collection: 'pricing',
+        depth: 0,
+        data: {
+          ...plan,
+          _status: 'published',
+        },
+      }),
+    ),
+    // Agency pricing
+    ...pricingPlans.agency.map((plan) =>
+      payload.create({
+        collection: 'pricing',
+        depth: 0,
+        data: {
+          ...plan,
+          _status: 'published',
+        },
+      }),
+    ),
+  ])
+
+  payload.logger.info(`— Seeding testimonials...`)
+
+  // Seed testimonials for each industry
+  await Promise.all([
+    // Education testimonials
+    ...testimonialsData.education.map((testimonial) =>
+      payload.create({
+        collection: 'testimonials',
+        depth: 0,
+        data: testimonial,
+      }),
+    ),
+    // E-commerce testimonials
+    ...testimonialsData.ecommerce.map((testimonial) =>
+      payload.create({
+        collection: 'testimonials',
+        depth: 0,
+        data: testimonial,
+      }),
+    ),
+    // Agency testimonials
+    ...testimonialsData.agency.map((testimonial) =>
+      payload.create({
+        collection: 'testimonials',
+        depth: 0,
+        data: testimonial,
+      }),
+    ),
   ])
 
   payload.logger.info(`— Seeding globals...`)

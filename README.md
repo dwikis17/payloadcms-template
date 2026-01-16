@@ -1,14 +1,45 @@
-# Payload Website Template
+# PayloadCMS B2B Template
 
-This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+A production-ready B2B SaaS template built on [Payload CMS](https://payloadcms.com) and Next.js 15. This template extends the official Payload website template with enterprise features tailored for three key industries:
 
-This template is right for you if you are working on:
+## 🎯 Built For
 
-- A personal or enterprise-grade website, blog, or portfolio
-- A content publishing platform with a fully featured publication workflow
-- Exploring the capabilities of Payload
+- **Education Tech** - Course management, student portals, learning management systems
+- **E-commerce** - Product catalogs, inventory management, order processing
+- **Marketing Agencies** - Service offerings, client portfolios, case studies
 
-Core features:
+## ✨ What's New in This Template
+
+### Additional Collections (6)
+- **Pricing** - Flexible pricing plans with Stripe integration
+- **Testimonials** - Client reviews with ratings and industry filtering
+- **Courses** - Complete course management for education platforms
+- **Products** - E-commerce product catalog with variants
+- **Services** - Agency service offerings with deliverables
+- **Orders** - Order management and payment tracking
+
+### New Layout Blocks (6)
+- **PricingTable** - Comparison tables with featured plans
+- **Testimonials** - Client testimonials grid/carousel
+- **FeatureGrid** - Feature showcase with icons
+- **Stats** - Key metrics display (e.g., "10,000+ Users")
+- **LogoCloud** - Client/partner logo display
+- **FAQ** - Frequently asked questions accordion
+
+### Page Templates (5)
+- `/pricing` - Pricing comparison page
+- `/testimonials` - Client testimonials showcase
+- `/courses` & `/courses/[slug]` - Course catalog and details
+- `/products` & `/products/[slug]` - Product catalog and details
+- `/services` & `/services/[slug]` - Services listing and details
+
+### Ready for Demo
+- **Industry-specific seed data** for Education, E-commerce, and Agency
+- **15+ testimonials** across all industries
+- **9 pricing plans** (3 per industry)
+- Professional demo content ready to showcase
+
+## Core Features (Original + New)
 
 - [Pre-configured Payload Config](#how-it-works)
 - [Authentication](#users-authentication)
@@ -22,6 +53,10 @@ Core features:
 - [Redirects](#redirects)
 - [Jobs and Scheduled Publishing](#jobs-and-scheduled-publish)
 - [Website](#website)
+- **B2B-specific Collections** ⭐ NEW
+- **Industry Templates** ⭐ NEW
+- **Stripe Payment Integration** ⭐ NEW
+- **Email Notifications** ⭐ NEW
 
 ## Quick Start
 
@@ -88,6 +123,34 @@ See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for de
 
   Same as above but for the footer of your site.
 
+## B2B Collections
+
+These additional collections power the B2B features of this template:
+
+- #### Pricing
+
+  Manage pricing plans with features, billing periods, and call-to-action buttons. Supports Stripe integration via `stripePriceId` field. Perfect for SaaS pricing pages with "Most Popular" highlighting.
+
+- #### Testimonials
+
+  Client testimonials with ratings, avatars, company logos, and industry tags. Featured testimonials can be highlighted on landing pages. Supports optional video testimonials.
+
+- #### Courses (Education Tech)
+
+  Complete course management with instructor relationships, curriculum structure (modules/lessons), learning outcomes, prerequisites, and pricing. Includes student enrollment tracking.
+
+- #### Products (E-commerce)
+
+  Product catalog with SKU, pricing, sale prices, variants (size, color, etc.), specifications, inventory tracking, and multiple images. Features related products for cross-selling.
+
+- #### Services (Marketing Agencies)
+
+  Service offerings with flexible pricing models (fixed/hourly/custom), deliverables lists, timeline estimates, and relationships to case studies (Posts). Featured services can be highlighted.
+
+- #### Orders
+
+  Order management system tracking purchases, customer information, line items, totals, payment status, and Stripe payment IDs. Integrates with product catalog.
+
 ## Access control
 
 Basic access control is setup to limit access to various content based based on publishing status.
@@ -102,11 +165,21 @@ For more details on how to extend this functionality, see the [Payload Access Co
 
 Create unique page layouts for any type of content using a powerful layout builder. This template comes pre-configured with the following layout building blocks:
 
-- Hero
-- Content
-- Media
-- Call To Action
-- Archive
+### Original Blocks
+- **Hero** - Full-width hero sections with images and CTAs
+- **Content** - Rich text content with Lexical editor
+- **Media** - Image and video embeds
+- **Call To Action** - Conversion-focused CTA sections
+- **Archive** - Dynamic content listings (posts, courses, etc.)
+- **Form** - Contact forms with field builder
+
+### New B2B Blocks
+- **PricingTable** - Display pricing plans in comparison format with feature lists, highlights for popular plans, and customizable CTAs
+- **Testimonials** - Showcase client testimonials in grid or carousel layouts with ratings, avatars, and company logos
+- **FeatureGrid** - Highlight product/service features in responsive grids with icons and descriptions
+- **Stats** - Display key metrics and achievements (e.g., "10,000+ Active Users", "99.9% Uptime")
+- **LogoCloud** - Show client or partner logos in organized grids with optional grayscale effect
+- **FAQ** - Frequently asked questions in accordion format for better UX
 
 Each block is fully designed and built into the front-end website that comes with this template. See [Website](#website) for more details.
 
@@ -297,6 +370,48 @@ Before deploying your app, you need to:
 2. You can then deploy Payload as you would any other Node.js or Next.js application either directly on a VPS, DigitalOcean's Apps Platform, via Coolify or more. More guides coming soon.
 
 You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/production/deployment) for full details.
+
+## 📚 Documentation
+
+This template includes comprehensive documentation to help you get started:
+
+- **[SETUP.md](./SETUP.md)** - Complete setup guide including:
+  - Installation and prerequisites
+  - Database configuration
+  - Environment variables
+  - Using the new collections and blocks
+  - Creating pricing plans, courses, products, and services
+  - Development and deployment commands
+  - Integration setup (Stripe, email, CRM, analytics)
+  - Industry-specific usage guides
+  - Troubleshooting
+
+For implementation details and the full development plan, see:
+- **Implementation Plan**: `/Users/dwiki/.claude/plans/compiled-sniffing-catmull.md`
+
+## 🚀 Quick Start for B2B Features
+
+1. **Seed the database** with demo content:
+   ```bash
+   # Via admin panel: go to /admin and click "Seed Database"
+   # Or via CLI:
+   pnpm payload seed
+   ```
+
+2. **Explore new collections** in the admin panel:
+   - Pricing → Create pricing plans
+   - Testimonials → Add client reviews
+   - Courses/Products/Services → Industry-specific content
+
+3. **Build pages** using new blocks:
+   - Go to Pages → Create New
+   - Add PricingTable, Testimonials, or other B2B blocks
+   - Preview and publish
+
+4. **View demo pages**:
+   - `/pricing` - Pricing comparison
+   - `/testimonials` - Client testimonials
+   - `/courses`, `/products`, `/services` - Industry pages
 
 ## Questions
 
